@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title></title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  <style>
+    .container {
+		width: 40%;
+		margin: 20px auto 0px auto;
+	}
+
+	.removed {
+		color: gray;
+	}		
+	
+	.removed label {
+		text-decoration: line-through;
+	}
+	
+	ul li {
+		list-style-type: none;
+	}
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h2>My Shopping List</h2>
+    <div class="input-group">
+      <input placeholder="add shopping list item" type="text" class="js-new-item form-control">
+      <div class="input-group-append">
+        <button @click="addItem" class="js-add btn btn-outline-secondary" type="button">Add!</button>
+      </div>
+    </div>
+    <ul>
+      <li>
+        <div class="checkbox">
+          <label>
+            <input class="js-item" name="list" type="checkbox"> Carrot
+          </label>
+        </div>
+      </li>
+      <li>
+        <div class="checkbox">
+          <label>
+            <input class="js-item" name="list" type="checkbox"> Book
+          </label>
+        </div>
+      </li>
+      <li class="removed">
+        <div class="checkbox">
+          <label>
+            <input class="js-item" name="list" type="checkbox" checked> Gift for aunt's birthday
+          </label>
+        </div>
+      </li>
+    </ul>
+    <!-- ... -->
+    <div class="footer">
+      <hr />
+      <em>Change the title of your shopping list here</em>
+      <input class="js-change-title" type="text" value="My Shopping List" />
+    </div>
+  </div>
+  <script>
+  $(document).ready(function() {
+    /**
+     * Add button click handler
+     */
+    function onAdd() {
+      var $ul, li, $li, $label, $div, value;
+      value = $('.js-new-item').val();
+      //validate against empty values
+      if (value === '') {
+        return;
+      }
+
+      $ul = $('ul');
+      $li = $('<li>').appendTo($ul);
+      $div = $('<div>').addClass('checkbox')
+        .appendTo($li);
+      $label = $('<label>').appendTo($div);
+      $('<input>').attr('type', 'checkbox')
+        .addClass('item')
+        .attr('name', 'list')
+        .click(toggleRemoved)
+        .appendTo($label);
+      $label.append(value);
+      $('.js-new-item').val('');
+    }
+    /**
+     * Checkbox click handler -
+     * toggles class removed on li parent element
+     * @param ev
+     */
+    function toggleRemoved(ev) {
+      var $el;
+      $el = $(ev.currentTarget);
+      $el.closest('li').toggleClass('removed');
+    }
+
+    //And javascript code:
+    function onChangeTitle() {
+      $('h2').text($('.js-change-title').val());
+    }
+
+    $('.js-change-title').keyup(onChangeTitle);
+    $('.js-add').click(onAdd);
+    $('.js-item').click(toggleRemoved);
+  });
+  </script>
+</body>
+
+</html>
